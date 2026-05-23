@@ -20,11 +20,11 @@ import { REACTION_META } from "@/types";
 import type { ReactionEmoji } from "@/types";
 
 interface ReactionButtonProps {
-  emoji: string;
+  emoji: ReactionEmoji;
   count: number;
   isOptimistic?: boolean;
   isLoading?: boolean;
-  onTap: (emoji: string) => void;
+  onTap: (emoji: ReactionEmoji) => void;
   disabled?: boolean;
 }
 

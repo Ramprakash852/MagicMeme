@@ -1,5 +1,6 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       // Supabase Storage — memes bucket public URLs
@@ -15,6 +16,7 @@ const nextConfig = {
       },
     ],
   },
+  turbopack: {},
   // Fabric.js is a browser-only lib; exclude from server bundle
   webpack: (config, { isServer }) => {
     if (isServer) {
@@ -24,4 +26,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
