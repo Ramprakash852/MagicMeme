@@ -22,37 +22,37 @@ const stepTransition = {
 
 const isFullscreen = (step: string) => step === "edit";
 
-const HERO_FEATURES = [
+const FEED_HIGHLIGHTS = [
   {
-    title: "Fast import",
-    description: "Drag, paste, or browse in one motion.",
+    badge: "Tooling",
+    title: "Fast import pipeline",
+    description:
+      "Drag, paste, or browse. Image lands in the editor flow instantly.",
+    comments: 124,
   },
   {
-    title: "AI captions",
-    description: "Generate sharper punchlines from any image.",
+    badge: "AI",
+    title: "Context-aware caption generation",
+    description:
+      "Claude analyzes visual context and returns structured meme suggestions.",
+    comments: 89,
   },
   {
-    title: "Ready to share",
-    description: "Edit, export, and post without leaving the flow.",
+    badge: "Sharing",
+    title: "Publish-ready output",
+    description:
+      "Edit on canvas, export to PNG, publish with live reaction support.",
+    comments: 63,
   },
 ];
 
-const WORKFLOW_STEPS = [
-  {
-    label: "01",
-    title: "Upload a shot",
-    description: "Drop a photo, paste from clipboard, or use your camera.",
-  },
-  {
-    label: "02",
-    title: "Pick the angle",
-    description: "Let the AI suggest captions, then fine-tune the tone.",
-  },
-  {
-    label: "03",
-    title: "Publish the meme",
-    description: "Polish the layout and share a clean link instantly.",
-  },
+const QUICK_FILTERS = ["Hot", "New", "Top", "Rising", "AI Picks"];
+
+const TRENDING_COMMUNITIES = [
+  "r/magicmeme",
+  "r/aicreators",
+  "r/memelabs",
+  "r/frontenddesign",
 ];
 
 export default function Home() {
@@ -222,149 +222,157 @@ function UploadScreen({
   onWebcam: () => void;
 }) {
   return (
-    <section className="w-full px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
-      <div className="mx-auto grid w-full max-w-7xl items-center gap-8 lg:grid-cols-[1.1fr_minmax(0,0.9fr)] lg:gap-10">
-        <div className="flex flex-col gap-8">
-          <div className="space-y-6">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-flex items-center gap-2 rounded-full border border-[rgba(200,241,53,0.18)] bg-[rgba(200,241,53,0.08)] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#C8F135] shadow-[0_0_0_1px_rgba(255,255,255,0.02)_inset]"
+    <section className="w-full px-3 py-4 sm:px-4 sm:py-6 lg:px-6">
+      <div className="mx-auto w-full max-w-7xl">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-4 flex items-center gap-2 overflow-x-auto rounded-2xl border border-[#2f2f2f] bg-[#101114] p-2"
+        >
+          {QUICK_FILTERS.map((filter, idx) => (
+            <button
+              key={filter}
+              className={`whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-semibold transition ${
+                idx === 0
+                  ? "bg-[#ff4500] text-white"
+                  : "bg-[#1b1d22] text-white/70 hover:bg-[#252831]"
+              }`}
             >
-              <span className="h-2 w-2 rounded-full bg-[#C8F135] shadow-[0_0_18px_rgba(200,241,53,0.55)]" />
-              AI-powered meme studio
-            </motion.div>
+              {filter}
+            </button>
+          ))}
+        </motion.div>
 
-            <div className="max-w-3xl space-y-4">
-              <motion.h1
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  delay: 0.05,
-                  duration: 0.45,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-                className="text-display max-w-3xl"
-              >
-                Turn any image into a polished meme in seconds.
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.12, duration: 0.4 }}
-                className="max-w-2xl text-base leading-7 sm:text-lg"
-                style={{ color: "var(--text-secondary)" }}
-              >
-                Drop a photo, let the model suggest the caption, then refine the
-                layout in a clean editor built for fast, shareable output.
-              </motion.p>
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.18, duration: 0.4 }}
-              className="grid gap-3 sm:grid-cols-3"
-            >
-              {HERO_FEATURES.map((feature, index) => (
-                <motion.article
-                  key={feature.title}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    delay: 0.22 + index * 0.06,
-                    duration: 0.32,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                  className="premium-panel rounded-[22px] p-4"
-                >
-                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-2xl border border-[rgba(200,241,53,0.16)] bg-[rgba(200,241,53,0.06)] text-sm font-bold text-[#C8F135]">
-                    0{index + 1}
-                  </div>
-                  <h2 className="text-sm font-semibold tracking-tight text-white">
-                    {feature.title}
-                  </h2>
-                  <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
-                    {feature.description}
-                  </p>
-                </motion.article>
-              ))}
-            </motion.div>
-
-            <motion.div
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
+          <div className="space-y-4">
+            <motion.article
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.24, duration: 0.4 }}
-              className="flex flex-wrap gap-3"
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="overflow-hidden rounded-2xl border border-[#2d2f36] bg-[#0f1014]"
             >
-              {[
-                "Drag and drop upload",
-                "Paste from clipboard",
-                "Webcam capture",
-                "One-flow editing",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="flex items-center gap-2 rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-4 py-2 text-sm text-[var(--text-secondary)]"
-                >
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#C8F135]" />
-                  {item}
+              <div className="flex items-start gap-3 border-b border-[#23262d] bg-[#12141a] px-3 py-2.5 sm:px-4">
+                <div className="flex w-10 shrink-0 flex-col items-center rounded-lg bg-[#171a21] px-1.5 py-1 text-[11px] font-semibold text-white/55">
+                  <span className="text-[#ff6a2b]">▲</span>
+                  <span>1.2k</span>
+                  <span>▼</span>
                 </div>
-              ))}
-            </motion.div>
+
+                <div className="min-w-0 flex-1">
+                  <p className="text-[11px] text-white/45">
+                    r/magicmeme • Posted by @you • now
+                  </p>
+                  <h1 className="mt-1 text-lg font-semibold tracking-tight text-white sm:text-xl">
+                    Create a meme from any image with AI suggestions
+                  </h1>
+                  <p className="mt-1 text-sm text-white/60">
+                    Upload your image to start the flow. Next step auto-opens
+                    caption suggestions.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-3 sm:p-4">
+                <UploadZone onUpload={onUpload} onWebcam={onWebcam} />
+              </div>
+            </motion.article>
+
+            {FEED_HIGHLIGHTS.map((item, index) => (
+              <motion.article
+                key={item.title}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: 0.05 + index * 0.06,
+                  duration: 0.28,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className="flex overflow-hidden rounded-2xl border border-[#2d2f36] bg-[#111318]"
+              >
+                <aside className="flex w-12 shrink-0 flex-col items-center justify-start gap-1 bg-[#161922] py-3 text-xs font-semibold text-white/55">
+                  <span className="text-[#ff6a2b]">▲</span>
+                  <span>{320 - index * 38}</span>
+                  <span>▼</span>
+                </aside>
+
+                <div className="min-w-0 flex-1 p-4">
+                  <div className="flex items-center gap-2 text-xs text-white/45">
+                    <span className="rounded-full bg-[#232733] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[#7aa2ff]">
+                      {item.badge}
+                    </span>
+                    <span>r/frontend</span>
+                    <span>•</span>
+                    <span>{item.comments} comments</span>
+                  </div>
+
+                  <h2 className="mt-2 text-base font-semibold tracking-tight text-white sm:text-lg">
+                    {item.title}
+                  </h2>
+                  <p className="mt-1.5 text-sm leading-6 text-white/65">
+                    {item.description}
+                  </p>
+                </div>
+              </motion.article>
+            ))}
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="grid gap-4 rounded-[28px] border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] p-5 shadow-[0_24px_80px_rgba(0,0,0,0.32)] backdrop-blur-xl sm:grid-cols-3"
+          <motion.aside
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.12, duration: 0.28 }}
+            className="space-y-4 lg:sticky lg:top-[5.5rem]"
           >
-            {WORKFLOW_STEPS.map((step) => (
-              <div key={step.label} className="space-y-3">
-                <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#C8F135]">
-                  {step.label}
-                </div>
-                <h3 className="text-base font-semibold tracking-tight text-white">
-                  {step.title}
-                </h3>
-                <p className="text-sm leading-6 text-[var(--text-secondary)]">
-                  {step.description}
+            <div className="overflow-hidden rounded-2xl border border-[#2d2f36] bg-[#101216]">
+              <div className="border-b border-[#23262d] bg-gradient-to-r from-[#ff4500] to-[#ff7b45] px-4 py-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/90">
+                  About MagicMeme
                 </p>
               </div>
-            ))}
-          </motion.div>
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, x: 24, y: 8 }}
-          animate={{ opacity: 1, x: 0, y: 0 }}
-          transition={{ delay: 0.18, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="relative"
-        >
-          <div className="absolute -inset-4 rounded-[36px] bg-[radial-gradient(circle_at_top,_rgba(200,241,53,0.16),_transparent_58%)] blur-2xl" />
-
-          <div className="relative rounded-[32px] border border-[rgba(255,255,255,0.08)] bg-[rgba(10,10,10,0.72)] p-4 shadow-[0_32px_120px_rgba(0,0,0,0.55)] backdrop-blur-2xl sm:p-6">
-            <div className="mb-4 flex flex-col gap-3 border-b border-[rgba(255,255,255,0.06)] pb-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--text-tertiary)]">
-                  Start here
+              <div className="space-y-3 p-4">
+                <p className="text-sm leading-6 text-white/70">
+                  A frontend-first meme studio with AI-assisted captioning,
+                  canvas editing, and social sharing.
                 </p>
-                <h2 className="mt-1 text-xl font-semibold tracking-tight text-white">
-                  Upload your image
-                </h2>
-              </div>
-
-              <div className="inline-flex items-center gap-2 rounded-full border border-[rgba(200,241,53,0.16)] bg-[rgba(200,241,53,0.06)] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C8F135]">
-                Ready for desktop and mobile
+                <button
+                  onClick={onWebcam}
+                  className="w-full rounded-full bg-[#ff4500] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#ff5a1f]"
+                >
+                  Create Post (Camera)
+                </button>
               </div>
             </div>
 
-            <UploadZone onUpload={onUpload} onWebcam={onWebcam} />
-          </div>
-        </motion.div>
+            <div className="rounded-2xl border border-[#2d2f36] bg-[#101216] p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/55">
+                Trending communities
+              </p>
+              <ul className="mt-3 space-y-2 text-sm text-white/75">
+                {TRENDING_COMMUNITIES.map((community) => (
+                  <li
+                    key={community}
+                    className="flex items-center justify-between rounded-lg bg-[#171a22] px-3 py-2"
+                  >
+                    <span>{community}</span>
+                    <span className="text-[#86b7ff]">Join</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="rounded-2xl border border-[#2d2f36] bg-[#101216] p-4 text-sm text-white/70">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/55">
+                Creation flow
+              </p>
+              <ol className="space-y-2">
+                <li>1. Upload image</li>
+                <li>2. Review AI suggestions</li>
+                <li>3. Edit in canvas</li>
+                <li>4. Share and collect reactions</li>
+              </ol>
+            </div>
+          </motion.aside>
+        </div>
       </div>
     </section>
   );
