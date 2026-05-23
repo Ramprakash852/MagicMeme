@@ -53,6 +53,7 @@ export function useFabricCanvas(
   const fabricRef = useRef<Canvas | null>(null);
   const initGenerationRef = useRef(0);
   const [isReady, setIsReady] = useState(false);
+  const [hasMeasuredSize, setHasMeasuredSize] = useState(false);
   const [canvasSize, setCanvasSize] = useState({ w: 600, h: 500 });
   const optionsRef = useRef(options);
   optionsRef.current = options;
@@ -140,6 +141,7 @@ export function useFabricCanvas(
       if (cw < 10 || ch < 10) return;
       fabric.setDimensions({ width: cw, height: ch });
       setCanvasSize({ w: cw, h: ch });
+      setHasMeasuredSize(true);
       fabric.renderAll();
     });
     ro.observe(containerRef.current);
@@ -148,6 +150,7 @@ export function useFabricCanvas(
     const ch = containerRef.current.clientHeight;
     fabricRef.current?.setDimensions({ width: cw, height: ch });
     setCanvasSize({ w: cw, h: ch });
+    setHasMeasuredSize(true);
     return () => ro.disconnect();
   }, [isReady, containerRef]);
 
@@ -169,11 +172,13 @@ export function useFabricCanvas(
       const cw = fabric.width ?? 600;
       const ch = fabric.height ?? 500;
 
-      // Scale image to cover canvas
-      const scale = Math.max(cw / imgEl.width, ch / imgEl.height);
+      // Scale image to fit inside canvas without cropping
+      const scale = Math.min(cw / imgEl.width, ch / imgEl.height);
       const fabricImg = new FabricImage(imgEl, {
-        left: (cw - imgEl.width * scale) / 2,
-        top: (ch - imgEl.height * scale) / 2,
+        originX: "center",
+        originY: "center",
+        left: cw / 2,
+        top: ch / 2,
         scaleX: scale,
         scaleY: scale,
         selectable: false,
@@ -426,6 +431,7 @@ export function useFabricCanvas(
   return {
     fabricRef,
     isReady,
+    hasMeasuredSize,
     canvasSize,
     initEditor,
     updateActiveLayer,

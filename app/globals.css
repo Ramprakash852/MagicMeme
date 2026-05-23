@@ -1,8 +1,50 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+/* ======================================================
+   TAILWIND v4 THEME — maps old tailwind.config.ts here
+   ====================================================== */
+@theme {
+  --color-lime: #c8f135;
+  --color-lime-dark: #a8d020;
+  --color-surface: #111111;
+  --color-surface-elevated: #1a1a1a;
+  --color-surface-card: #222222;
+
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: "SF Mono", "Fira Code", monospace;
+
+  --animate-slide-up: slideUp 0.3s ease-out;
+  --animate-fade-in: fadeIn 0.2s ease-out;
+  --animate-pulse-lime: pulseLime 2s infinite;
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes pulseLime {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(200, 241, 53, 0.4);
+    }
+    50% {
+      box-shadow: 0 0 0 8px rgba(200, 241, 53, 0);
+    }
+  }
+}
 
 /* ======================================================
    DESIGN TOKENS — Premium AI-native dark luxury UI
@@ -60,19 +102,10 @@
 }
 
 /* ======================================================
-   RESET + BASE
+   BASE STYLES
    ====================================================== */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 html {
   height: 100%;
-  /* Prevent font size inflation on mobile rotation */
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
@@ -103,7 +136,6 @@ body {
     "liga" 1,
     "cv11" 1;
 
-  /* Subtle noise texture for premium feel */
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
   background-attachment: fixed;
 }
@@ -164,7 +196,6 @@ body {
   background: #555;
 }
 
-/* Firefox */
 * {
   scrollbar-width: thin;
   scrollbar-color: #333 transparent;
@@ -173,8 +204,6 @@ body {
 /* ======================================================
    INTERACTIVE ELEMENTS
    ====================================================== */
-
-/* Remove tap highlight on ALL interactive elements (mobile) */
 a,
 button,
 [role="button"],
@@ -185,14 +214,12 @@ textarea {
   touch-action: manipulation;
 }
 
-/* Smooth focus rings */
 :focus-visible {
   outline: 2px solid var(--lime);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-/* Prevent text selection flicker on double-tap (mobile) */
 .no-select {
   -webkit-user-select: none;
   user-select: none;
@@ -215,7 +242,6 @@ textarea {
   cursor: crosshair !important;
 }
 
-/* Prevent selection during editor interactions */
 .editor-no-select {
   -webkit-user-select: none;
   user-select: none;
@@ -474,17 +500,6 @@ input[type="color"]::-webkit-color-swatch {
   }
 }
 
-@keyframes pulseLime {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(200, 241, 53, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 0 8px rgba(200, 241, 53, 0);
-  }
-}
-
-/* Skeleton shimmer */
 .skeleton {
   background: linear-gradient(
     90deg,
@@ -496,7 +511,6 @@ input[type="color"]::-webkit-color-swatch {
   animation: shimmer 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Premium button shine sweep */
 @keyframes shineSweep {
   0% {
     transform: translateX(-100%) skewX(-12deg);
@@ -524,7 +538,6 @@ input[type="color"]::-webkit-color-swatch {
   border-radius: inherit;
 }
 
-/* Float animation for decorative elements */
 @keyframes float {
   0%,
   100% {
@@ -539,7 +552,6 @@ input[type="color"]::-webkit-color-swatch {
   animation: float 4s ease-in-out infinite;
 }
 
-/* Glow pulse for active states */
 @keyframes glowPulse {
   0%,
   100% {
@@ -554,29 +566,6 @@ input[type="color"]::-webkit-color-swatch {
 
 .animate-glow-pulse {
   animation: glowPulse 3s ease-in-out infinite;
-}
-
-/* Orbit animation for UI accents */
-@keyframes orbit {
-  0% {
-    transform: rotate(0deg) translateX(8px) rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg) translateX(8px) rotate(-360deg);
-  }
-}
-
-/* Gradient border animation */
-@keyframes gradientBorder {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
 }
 
 .animate-fade-up {
@@ -654,7 +643,6 @@ input[type="color"]::-webkit-color-swatch {
   background-color: #141414;
 }
 
-/* Premium scrollbar for panels */
 .panel-scroll {
   scrollbar-width: thin;
   scrollbar-color: #2a2a2a transparent;
@@ -671,7 +659,6 @@ input[type="color"]::-webkit-color-swatch {
   background: #404040;
 }
 
-/* Focus ring override for editor elements */
 .editor-focus:focus-visible {
   outline: 2px solid rgba(200, 241, 53, 0.5);
   outline-offset: 2px;
@@ -686,8 +673,6 @@ input[type="color"]::-webkit-color-swatch {
 .pt-safe {
   padding-top: env(safe-area-inset-top);
 }
-
-/* Bottom sheet / toolbar safe area padding */
 .bottom-sheet-padding {
   padding-bottom: calc(env(safe-area-inset-bottom) + 1rem);
 }

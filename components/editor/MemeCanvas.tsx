@@ -57,6 +57,7 @@ export function MemeCanvas() {
 
   const {
     isReady,
+    hasMeasuredSize,
     initEditor,
     updateActiveLayer,
     addTextLayer,
@@ -74,7 +75,14 @@ export function MemeCanvas() {
 
   // ─── Init editor once Fabric is ready ───────────────────────────────────────
   useEffect(() => {
-    if (!isReady || !imageData || !selectedSuggestion || initialized) return;
+    if (
+      !isReady ||
+      !hasMeasuredSize ||
+      !imageData ||
+      !selectedSuggestion ||
+      initialized
+    )
+      return;
 
     const template = getTemplate(selectedSuggestion.templateId);
     const layers = buildInitialLayers(selectedSuggestion, template, 600, 500);
@@ -92,6 +100,7 @@ export function MemeCanvas() {
     imageData,
     selectedSuggestion,
     initialized,
+    hasMeasuredSize,
     initEditor,
     setEditorState,
   ]);

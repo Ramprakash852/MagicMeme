@@ -11,14 +11,18 @@ interface Props {
 
 export function WebcamCapture({ open, onCapture, onClose }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!open) {
-      stream?.getTracks().forEach((t) => t.stop());
+      streamRef.current?.getTracks().forEach((t) => t.stop());
+      streamRef.current = null;
+      setStream(null);
       setError(null);
+      setIsLoading(false);
       return;
     }
 
@@ -34,11 +38,9 @@ export function WebcamCapture({ open, onCapture, onClose }: Props) {
         },
       })
       .then((s) => {
+        streamRef.current = s;
         setStream(s);
-        if (videoRef.current) {
-          videoRef.current.srcObject = s;
-          setIsLoading(false);
-        }
+        setIsLoading(false);
       })
       .catch((err) => {
         const message =
@@ -52,8 +54,19 @@ export function WebcamCapture({ open, onCapture, onClose }: Props) {
         onClose();
       });
 
-    return () => stream?.getTracks().forEach((t) => t.stop());
-  }, [open, stream, onClose]);
+    return () => {
+      streamRef.current?.getTracks().forEach((t) => t.stop());
+      streamRef.current = null;
+    };
+  }, [open, onClose]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !stream) return;
+
+    video.srcObject = stream;
+    void video.play().catch(() => undefined);
+  }, [stream]);
 
   const capture = useCallback(() => {
     const video = videoRef.current;
@@ -161,7 +174,7 @@ export function WebcamCapture({ open, onCapture, onClose }: Props) {
                 autoPlay
                 playsInline
                 muted
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain bg-black"
                 style={{ opacity: isLoading || error ? 0.3 : 1 }}
               />
 
